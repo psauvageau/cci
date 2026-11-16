@@ -7,7 +7,7 @@ import argparse
 import logging
 from pathlib import Path
 
-from ..decision import get_decision
+from ..decision import default_file_name, get_decision
 from .cli_cmd import CliCmd
 
 _logger = logging.getLogger(__name__)
@@ -32,12 +32,17 @@ class CommandGetDecision(CliCmd):
         parser.add_argument(
             "output",
             type=Path,
+            nargs="?",
+            default=None,
             help="Markdown file (.md) where the decision is saved, "
-                 "with its metadata in YAML front matter",
+                 "with its metadata in YAML front matter "
+                 "(default: <decision number>.<language>.md in the current directory, "
+                 "e.g. 521584.en.md)",
         )
 
     def run(self, args: argparse.Namespace) -> None:
-        output: Path = args.output
+        # Computed before downloading, so a URL that is not a decision URL fails right away.
+        output: Path = args.output or Path(default_file_name(args.url))
         _logger.info("Getting decision %s", args.url)
         document = get_decision(args.url)
         output.write_text(document, encoding="utf-8")

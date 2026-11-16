@@ -40,10 +40,11 @@ class CommandGet(CliCmd):
         _logger.info("Running %s command", self.title)
 
         for year in range(LAST, FIRST, - 1):            
-            url = URL_PER_YEAR.format(year=year)
-            _logger.info("Fetching decisions for year %d from URL: %s", year, url)
-            for decision_url in fetch_decisions_url(url):
+            year_url = URL_PER_YEAR.format(year=year)
+            _logger.info("Fetching decisions for year %d from URL: %s", year, year_url)
+            for decision_url in fetch_decisions_url(year_url):
                 _logger.info("Found decision URL: %s", decision_url)
+                print(decision_url)
 
 
 

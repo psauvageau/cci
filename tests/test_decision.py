@@ -3,7 +3,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from unittest import mock
 
-from cci.decision import decision_document, get_decision
+from cci.decision import decision_document, default_file_name, get_decision
 from cci.decision_document import read_document
 
 FIXTURES = Path(__file__).parent / "fixtures"
@@ -23,6 +23,25 @@ class TestDecisionDocument(unittest.TestCase):
         self.assertTrue(rest.startswith("# Patel v. The King, 2026 TCC 33\n\nDocket: 2016-4750(IT)G\n"))
         self.assertIn("\n## A. Introduction\n", rest)
         self.assertIn("\n[^5]: This issue is the subject", rest)
+
+
+class TestDefaultFileName(unittest.TestCase):
+
+    def test_uses_the_decision_number_and_language(self) -> None:
+        self.assertEqual(default_file_name(URL), "521584.en.md")
+
+    def test_language_versions_get_different_names(self) -> None:
+        self.assertEqual(
+            default_file_name("https://decision.tcc-cci.ca/tcc-cci/decisions/fr/item/521584/index.do"),
+            "521584.fr.md",
+        )
+
+    def test_ignores_the_query(self) -> None:
+        self.assertEqual(default_file_name(URL + "?iframe=true"), "521584.en.md")
+
+    def test_rejects_a_url_that_is_not_a_decision(self) -> None:
+        with self.assertRaises(ValueError):
+            default_file_name("https://decision.tcc-cci.ca/tcc-cci/decisions/en/2024/nav_date.do")
 
 
 class TestGetDecision(unittest.TestCase):
