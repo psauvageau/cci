@@ -64,6 +64,17 @@ Run:
 - `src/cci/_cli/cmd_<name>.py` — one file per subcommand. A command only parses and
   validates its arguments, then delegates to logic in a separate module outside `_cli`.
 - `src/cci/_misc.py` — helpers (logging setup, debug data logging).
+- `src/cci/_http.py` — `get_html()`: the one place that sends HTTP requests (user agent, timeout).
+- `src/cci/decision_list.py` — list the decision URLs of a year ("browse by date" pages).
+- `src/cci/decision.py` — `get_decision(url)`: download one decision and build its document.
+- `src/cci/decision_metadata.py` — parse the metadata of a decision page (`DecisionMetadata`).
+- `src/cci/decision_markdown.py` — convert the decision HTML to Markdown (body only).
+- `src/cci/decision_document.py` — the output format: YAML front matter + title + body.
+- `tests/fixtures/` — saved decision pages (2026 English, French, 1996) used by the tests.
+
+The pages of the TCC site only contain their content in the iframe version
+(`?iframe=true`). The output documents are meant for an LLM agent through RAG:
+keep them machine-friendly (stable keys, JSON-compatible metadata) rather than pretty.
 
 To add a subcommand, use the `create-cli-command` skill (`.claude/skills/create-cli-command/`).
 

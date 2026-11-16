@@ -1,5 +1,5 @@
 """
-CLI command to save the text of one Tax Court of Canada decision to a file.
+CLI command to save one Tax Court of Canada decision as a Markdown document.
 """
 from __future__ import annotations
 
@@ -15,7 +15,7 @@ _logger = logging.getLogger(__name__)
 
 class CommandGetDecision(CliCmd):
     """
-    Get the text of one decision and save it to a file.
+    Get one decision and save it as a Markdown document with its metadata.
     """
     title: str = "get-decision"
 
@@ -32,12 +32,13 @@ class CommandGetDecision(CliCmd):
         parser.add_argument(
             "output",
             type=Path,
-            help="File where the text of the decision is saved",
+            help="Markdown file (.md) where the decision is saved, "
+                 "with its metadata in YAML front matter",
         )
 
     def run(self, args: argparse.Namespace) -> None:
         output: Path = args.output
         _logger.info("Getting decision %s", args.url)
-        text = get_decision(args.url)
-        output.write_text(text, encoding="utf-8")
-        _logger.info("Saved %d characters to %s", len(text), output)
+        document = get_decision(args.url)
+        output.write_text(document, encoding="utf-8")
+        _logger.info("Saved %d characters to %s", len(document), output)

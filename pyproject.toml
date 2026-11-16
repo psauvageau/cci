@@ -10,8 +10,10 @@ requires-python = ">=3.12"
 license = {text = "MIT"}
 
 dependencies = [
-    "requests",    
-    "types-requests"
+    "requests",
+    "types-requests",
+    "pyyaml",
+    "types-PyYAML"
 ]
 
 [project.optional-dependencies]
