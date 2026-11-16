@@ -9,8 +9,9 @@ from typing import  Type, Iterable, Optional, Generator, Final
 from contextlib import contextmanager
 
 from ._cli.cli_cmd import CliCmd
-from ._cli.cmd_placeholder import CommandPlaceholder
 from ._cli.cmd_rss import CommandRss
+from ._cli.cmd_get import CommandGet
+from ._cli.cmd_get_decision import CommandGetDecision
 
 
 from ._misc import init_logging
@@ -18,8 +19,9 @@ from ._misc import init_logging
 _logger = logging.getLogger()
 
 COMMANDS :list[Type[CliCmd]] = [
-    CommandPlaceholder,
     CommandRss,
+    CommandGet,
+    CommandGetDecision,
 ]
 
 def main()->None:
