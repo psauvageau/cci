@@ -13,14 +13,16 @@ dependencies = [
     "requests",
     "types-requests",
     "pyyaml",
-    "types-PyYAML"
+    "pinecone"
+    
 ]
 
 [project.optional-dependencies]
 dev = [
     "mypy",
     "pytest",
-    "pytest-cov"
+    "pytest-cov",
+    "types-PyYAML"
 ]
 
 [project.scripts]

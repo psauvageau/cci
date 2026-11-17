@@ -12,6 +12,7 @@ from ._cli.cli_cmd import CliCmd
 from ._cli.cmd_rss import CommandRss
 from ._cli.cmd_get import CommandGet
 from ._cli.cmd_get_decision import CommandGetDecision
+from ._cli.cmd_submit import CommandSubmit
 
 
 from ._misc import init_logging
@@ -22,6 +23,7 @@ COMMANDS :list[Type[CliCmd]] = [
     CommandRss,
     CommandGet,
     CommandGetDecision,
+    CommandSubmit,
 ]
 
 def main()->None:
