@@ -10,6 +10,7 @@ from __future__ import annotations
 import logging
 import re
 import time
+import random
 from html.parser import HTMLParser
 from typing import Generator, NamedTuple
 from urllib.parse import urljoin
@@ -18,7 +19,7 @@ from ._http import get_html
 
 _logger = logging.getLogger(__name__)
 
-_DELAY_BETWEEN_PAGES_S = 1.0
+_DELAY_BETWEEN_PAGES_S = 10.0
 
 # Path of a decision page, e.g. /tcc-cci/decisions/en/item/521380/index.do
 _DECISION_PATH = re.compile(r"/decisions/[a-z]{2}/item/\d+/index\.do$")
@@ -45,6 +46,7 @@ def fetch_decisions_url(url: str) -> Generator[str, None, None]:
         _logger.debug("Fetching page %d of %s", page, url)
         html = fetch_list_page(url, page)
         result = parse_list_page(html, url)
+        _logger.info("Found %d decision URLs on page %d", len(result.decision_urls), page)
         yield from result.decision_urls
 
         if not result.has_next_page:
@@ -108,3 +110,7 @@ class _AnchorCollector(HTMLParser):
         if tag == "a" and self._href is not None:
             self.anchors.append((self._href, "".join(self._text).strip()))
             self._href = None
+
+
+def _wait()->None:
+    time.sleep(random.uniform(1, _DELAY_BETWEEN_PAGES_S))
